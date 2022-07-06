@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "22PIHJMQ8oR0sdOjlK46SWA0FXqtBjDEin675hIuL9fTg0ebIhd2qxHht32KXNWXBhOau2MnCyFEw0zsUsLrHA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Michał\\Desktop\\Studia\\C#\\AuthenticationServer\\AuthenticationServer\\AuthenticationServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Michał\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
+  ],
+  "logs": []
+}

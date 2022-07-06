@@ -1,11 +1,14 @@
 ﻿using AuthenticationServer.Models;
 using AuthenticationServer.Models.Requests;
 using AuthenticationServer.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace AuthenticationServer.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AuthenticationController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -24,17 +27,17 @@ namespace AuthenticationServer.Controllers
             {
                 return BadRequest();
             }
-            if(registerRequest.Password != registerRequest.ConfirmPassword)
+            if (registerRequest.Password != registerRequest.ConfirmPassword)
             {
                 return BadRequest();
             }
             User existingUserByEmail = await _userRepository.GetByEmail(registerRequest.Email);
-            if(existingUserByEmail != null)
+            if (existingUserByEmail != null)
             {
                 return Conflict();
             }
             User existingUserByUsername = await _userRepository.GetByUsername(registerRequest.Email);
-            if(existingUserByUsername != null)
+            if (existingUserByUsername != null)
             {
                 return Conflict();
             }

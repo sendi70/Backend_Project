@@ -15,12 +15,16 @@ namespace AuthenticationServer.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly AccessTokenGenerator _AccessTokenGenerator;
+        private readonly RefreshTokenGenerator _RefreshTokenGenerator;
+        private readonly RefreshTokenValidator _refreshTokenValidator;
 
-        public AuthenticationController(IUserRepository userRepository, IPasswordHasher passwordHasher, AccessTokenGenerator accessTokenGenerator)
+        public AuthenticationController(IUserRepository userRepository, IPasswordHasher passwordHasher, AccessTokenGenerator accessTokenGenerator, RefreshTokenGenerator refreshTokenGenerator, RefreshTokenValidator refreshTokenValidator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _AccessTokenGenerator = accessTokenGenerator;
+            _RefreshTokenGenerator = refreshTokenGenerator;
+            _refreshTokenValidator = refreshTokenValidator;
         }
 
         [HttpPost("register")]
@@ -76,11 +80,26 @@ namespace AuthenticationServer.Controllers
             }
 
             string accessToken = _AccessTokenGenerator.GenerateToken(user);
+            string refreshToken = _RefreshTokenGenerator.GenerateToken();
 
             return Ok(new AuthenticatedUserResponse()
             {
                 AccessToken = accessToken,
+                RefreshToken = refreshToken
             });
+        }
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            bool isValidRefreshToken = _refreshTokenValidator.Validate(refreshRequest.RefreshToken);
+            if (!isValidRefreshToken)
+            {
+                return BadRequest();
+            }
         }
     }
 }

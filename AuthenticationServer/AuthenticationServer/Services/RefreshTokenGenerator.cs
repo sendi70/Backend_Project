@@ -15,7 +15,7 @@ namespace AuthenticationServer.Services
             _tokenGenerator = tokenGenerator;
         }
 
-        public string GenerateToken(User user)
+        public string GenerateToken()
         {
             return _tokenGenerator.GenerateToken(_configuration.RefreshTokenSecret,
                 _configuration.Issuer,

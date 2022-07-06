@@ -1,5 +1,6 @@
 ﻿using AuthenticationServer.Models;
 using AuthenticationServer.Models.Requests;
+using AuthenticationServer.Models.Responses;
 using AuthenticationServer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace AuthenticationServer.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly AccessTokenGenerator _AccessTokenGenerator;
 
-        public AuthenticationController(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public AuthenticationController(IUserRepository userRepository, IPasswordHasher passwordHasher, AccessTokenGenerator accessTokenGenerator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _AccessTokenGenerator = accessTokenGenerator;
         }
 
         [HttpPost("register")]
@@ -72,6 +75,12 @@ namespace AuthenticationServer.Controllers
                 return Unauthorized();
             }
 
+            string accessToken = _AccessTokenGenerator.GenerateToken(user);
+
+            return Ok(new AuthenticatedUserResponse()
+            {
+                AccessToken = accessToken,
+            });
         }
     }
 }

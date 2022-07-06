@@ -27,7 +27,8 @@ namespace AuthenticationServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddSingleton<AccessTokenGenerator>();
+            services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
         }
 

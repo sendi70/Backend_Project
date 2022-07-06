@@ -36,7 +36,7 @@ namespace AuthenticationServer.Controllers
             {
                 return Conflict();
             }
-            User existingUserByUsername = await _userRepository.GetByUsername(registerRequest.Email);
+            User existingUserByUsername = await _userRepository.GetByUsername(registerRequest.Username);
             if (existingUserByUsername != null)
             {
                 return Conflict();
@@ -51,6 +51,27 @@ namespace AuthenticationServer.Controllers
             };
             await _userRepository.Create(registrationUser);
             return Ok();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            User user = await _userRepository.GetByUsername(loginRequest.Username);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            bool isCorectPassword = _passwordHasher.VerifyPassword(loginRequest.Password, user.PasswordHash);
+            if (!isCorectPassword)
+            {
+                return Unauthorized();
+            }
+
         }
     }
 }

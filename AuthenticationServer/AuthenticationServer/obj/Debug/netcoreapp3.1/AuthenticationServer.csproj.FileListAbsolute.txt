@@ -19,3 +19,8 @@ C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\obj
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\obj\Debug\netcoreapp3.1\AuthenticationServer.dll
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\obj\Debug\netcoreapp3.1\AuthenticationServer.pdb
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\obj\Debug\netcoreapp3.1\AuthenticationServer.genruntimeconfig.cache
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

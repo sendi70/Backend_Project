@@ -20,6 +20,10 @@ namespace AuthenticationServer.Services
         {
             return Task.FromResult(_users.FirstOrDefault(u=> u.Email == email));
         }
+        public Task<User> GetById(Guid Id)
+        {
+            return Task.FromResult(_users.FirstOrDefault(u=> u.Id == Id));
+        }
 
         public Task<User> GetByUsername(string username)
         {

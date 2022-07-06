@@ -13,17 +13,17 @@ namespace AuthenticationServer.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly AccessTokenGenerator _AccessTokenGenerator;
-        private readonly RefreshTokenGenerator _RefreshTokenGenerator;
+        private readonly Authenticator _authenticator;
         private readonly RefreshTokenValidator _refreshTokenValidator;
 
-        public AuthenticationController(IUserRepository userRepository, IPasswordHasher passwordHasher, AccessTokenGenerator accessTokenGenerator, RefreshTokenGenerator refreshTokenGenerator, RefreshTokenValidator refreshTokenValidator)
+        public AuthenticationController(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IPasswordHasher passwordHasher, Authenticator authenticator, RefreshTokenValidator refreshTokenValidator)
         {
             _userRepository = userRepository;
+            _refreshTokenRepository = refreshTokenRepository;
             _passwordHasher = passwordHasher;
-            _AccessTokenGenerator = accessTokenGenerator;
-            _RefreshTokenGenerator = refreshTokenGenerator;
+            _authenticator = authenticator;
             _refreshTokenValidator = refreshTokenValidator;
         }
 
@@ -79,14 +79,8 @@ namespace AuthenticationServer.Controllers
                 return Unauthorized();
             }
 
-            string accessToken = _AccessTokenGenerator.GenerateToken(user);
-            string refreshToken = _RefreshTokenGenerator.GenerateToken();
-
-            return Ok(new AuthenticatedUserResponse()
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            });
+            AuthenticatedUserResponse response = await _authenticator.Authenticate(user);
+            return Ok(response);
         }
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
@@ -100,6 +94,19 @@ namespace AuthenticationServer.Controllers
             {
                 return BadRequest();
             }
+            RefreshToken refreshTokenDTO = await _refreshTokenRepository.GetRefreshToken(refreshRequest.RefreshToken);
+            if(refreshTokenDTO == null)
+            {
+               return NotFound();
+            }
+            await _refreshTokenRepository.Delete(refreshTokenDTO.Id);
+            User user=await _userRepository.GetById(refreshTokenDTO.UserId);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            AuthenticatedUserResponse response = await _authenticator.Authenticate(user);
+            return Ok(response);
         }
     }
 }

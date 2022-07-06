@@ -37,8 +37,10 @@ namespace AuthenticationServer
             services.AddSingleton<RefreshTokenGenerator>();
             services.AddSingleton<RefreshTokenValidator>();
             services.AddSingleton<TokenGenerator>();
+            services.AddSingleton<Authenticator>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+            services.AddSingleton<IRefreshTokenRepository, InMemoryRefreshTokenRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

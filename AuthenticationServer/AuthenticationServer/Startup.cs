@@ -34,6 +34,8 @@ namespace AuthenticationServer
             _configuration.Bind("Authentication", authenticationConfigurator);
             
             services.AddSingleton<AccessTokenGenerator>();
+            services.AddSingleton<RefreshTokenGenerator>();
+            services.AddSingleton<TokenGenerator>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
         }

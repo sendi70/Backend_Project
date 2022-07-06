@@ -9,8 +9,14 @@ namespace AuthenticationServer.Services
 {
     public class AccessTokenGenerator
     {
-        static SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("91aoTyQ9DLzGqflzWKvnzBsiv4XhGW7GidcLAbnIP0u67zSzihA5YpKymsmsU"));
-        SigningCredentials credentials=new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        private readonly AuthenticationConfiguration _configuration;
+        private readonly TokenGenerator _tokenGenerator;
+
+        public AccessTokenGenerator(AuthenticationConfiguration configuration, TokenGenerator tokenGenerator)
+        {
+            _configuration = configuration;
+            _tokenGenerator = tokenGenerator;
+        }
 
         public string GenerateToken(User user)
         {
@@ -21,8 +27,11 @@ namespace AuthenticationServer.Services
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            JwtSecurityToken token = new JwtSecurityToken("https://localhost:5001", "https://localhost:5001",claims,System.DateTime.UtcNow,System.DateTime.UtcNow.AddHours(1),credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return _tokenGenerator.GenerateToken(_configuration.AccesTokenSecret, 
+                _configuration.Issuer, 
+                _configuration.Audience, 
+                _configuration.AccessTokenExpirationMinutes, 
+                claims);
         }
     }
 }

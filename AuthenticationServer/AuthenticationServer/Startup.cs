@@ -48,8 +48,6 @@ namespace AuthenticationServer
             services.AddSingleton<RefreshTokenValidator>();
             services.AddScoped<Authenticator>();
             services.AddSingleton<TokenGenerator>();
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            services.AddScoped<IUserRepository, DatabaseUserRepository>();
             services.AddScoped<IRefreshTokenRepository, DatabaseRefreshTokenRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>

@@ -66,6 +66,10 @@ namespace AuthenticationServer.Controllers
                 {
                     return Conflict();
                 }
+                else
+                {
+                    return BadRequest();
+                }
             }
 
             return Ok();

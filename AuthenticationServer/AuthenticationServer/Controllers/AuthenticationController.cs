@@ -122,6 +122,6 @@ namespace AuthenticationServer.Controllers
             }
             await _refreshTokenRepository.DeleteAll(userId);
             return NoContent();
-        };
+        }
     }
 }

@@ -24,3 +24,7 @@ C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

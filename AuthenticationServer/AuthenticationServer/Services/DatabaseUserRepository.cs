@@ -33,7 +33,7 @@ namespace AuthenticationServer.Services
 
         public Task<User> GetByUsername(string username)
         {
-            return _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            return _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
         }
     }
 }

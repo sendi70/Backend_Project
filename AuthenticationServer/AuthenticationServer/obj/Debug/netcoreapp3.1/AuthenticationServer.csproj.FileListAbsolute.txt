@@ -68,3 +68,8 @@ C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Humanizer.dll
 C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Michał\Desktop\Studia\C#\AuthenticationServer\AuthenticationServer\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll

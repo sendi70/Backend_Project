@@ -4,8 +4,10 @@ using AuthenticationServer.Models.Responses;
 using AuthenticationServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,19 +17,20 @@ namespace AuthenticationServer.Controllers
     [ApiController]
     public class AuthenticationController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly UserManager<User> _userRepository;
         private readonly Authenticator _authenticator;
         private readonly RefreshTokenValidator _refreshTokenValidator;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public AuthenticationController(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository, IPasswordHasher passwordHasher, Authenticator authenticator, RefreshTokenValidator refreshTokenValidator)
+        public AuthenticationController(UserManager<User> userRepository,
+            Authenticator authenticator,
+            RefreshTokenValidator refreshTokenValidator,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
-            _refreshTokenRepository = refreshTokenRepository;
-            _passwordHasher = passwordHasher;
             _authenticator = authenticator;
             _refreshTokenValidator = refreshTokenValidator;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         [HttpPost("register")]
@@ -37,29 +40,34 @@ namespace AuthenticationServer.Controllers
             {
                 return BadRequest();
             }
+
             if (registerRequest.Password != registerRequest.ConfirmPassword)
             {
                 return BadRequest();
             }
-            User existingUserByEmail = await _userRepository.GetByEmail(registerRequest.Email);
-            if (existingUserByEmail != null)
-            {
-                return Conflict();
-            }
-            User existingUserByUsername = await _userRepository.GetByUsername(registerRequest.Username);
-            if (existingUserByUsername != null)
-            {
-                return Conflict();
-            }
 
-            string passwordHash = _passwordHasher.HashPassword(registerRequest.Password);
             User registrationUser = new User()
             {
                 Email = registerRequest.Email,
-                Username = registerRequest.Username,
-                PasswordHash = passwordHash
+                UserName = registerRequest.Username
             };
-            await _userRepository.Create(registrationUser);
+
+            IdentityResult result = await _userRepository.CreateAsync(registrationUser, registerRequest.Password);
+            if (!result.Succeeded)
+            {
+                IdentityErrorDescriber errorDescriber = new IdentityErrorDescriber();
+                IdentityError primaryError = result.Errors.FirstOrDefault();
+
+                if (primaryError.Code == nameof(errorDescriber.DuplicateEmail))
+                {
+                    return Conflict();
+                }
+                else if (primaryError.Code == nameof(errorDescriber.DuplicateUserName))
+                {
+                    return Conflict();
+                }
+            }
+
             return Ok();
         }
 
@@ -70,21 +78,24 @@ namespace AuthenticationServer.Controllers
             {
                 return BadRequest();
             }
-            User user = await _userRepository.GetByUsername(loginRequest.Username);
+
+            User user = await _userRepository.FindByNameAsync(loginRequest.Username);
             if (user == null)
             {
                 return Unauthorized();
             }
 
-            bool isCorectPassword = _passwordHasher.VerifyPassword(loginRequest.Password, user.PasswordHash);
-            if (!isCorectPassword)
+            bool isCorrectPassword = await _userRepository.CheckPasswordAsync(user, loginRequest.Password);
+            if (!isCorrectPassword)
             {
                 return Unauthorized();
             }
 
             AuthenticatedUserResponse response = await _authenticator.Authenticate(user);
+
             return Ok(response);
         }
+
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
         {
@@ -92,35 +103,45 @@ namespace AuthenticationServer.Controllers
             {
                 return BadRequest();
             }
+
             bool isValidRefreshToken = _refreshTokenValidator.Validate(refreshRequest.RefreshToken);
             if (!isValidRefreshToken)
             {
                 return BadRequest();
             }
+
             RefreshToken refreshTokenDTO = await _refreshTokenRepository.GetRefreshToken(refreshRequest.RefreshToken);
-            if(refreshTokenDTO == null)
-            {
-               return NotFound();
-            }
-            await _refreshTokenRepository.Delete(refreshTokenDTO.Id);
-            User user=await _userRepository.GetById(refreshTokenDTO.UserId);
-            if(user == null)
+            if (refreshTokenDTO == null)
             {
                 return NotFound();
             }
+
+            await _refreshTokenRepository.Delete(refreshTokenDTO.Id);
+
+            User user = await _userRepository.FindByIdAsync(refreshTokenDTO.UserId.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             AuthenticatedUserResponse response = await _authenticator.Authenticate(user);
+
             return Ok(response);
         }
+
         [Authorize]
         [HttpDelete("logout")]
         public async Task<IActionResult> Logout()
         {
             string rawUserId = HttpContext.User.FindFirstValue("id");
-            if(!Guid.TryParse(rawUserId, out Guid userId))
+
+            if (!Guid.TryParse(rawUserId, out Guid userId))
             {
                 return Unauthorized();
             }
+
             await _refreshTokenRepository.DeleteAll(userId);
+
             return NoContent();
         }
     }

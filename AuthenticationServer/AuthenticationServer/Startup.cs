@@ -33,6 +33,8 @@ namespace AuthenticationServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddIdentityCore<User>().AddEntityFrameworkStores<AuthenticationDbContext>();
          
             AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
             _configuration.Bind("Authentication", authenticationConfiguration);

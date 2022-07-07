@@ -27,7 +27,7 @@ namespace AuthenticationServer.Services
 
         public Task<User> GetByUsername(string username)
         {
-            return Task.FromResult(_users.FirstOrDefault(u => u.Username == username));
+            return Task.FromResult(_users.FirstOrDefault(u => u.UserName == username));
         }
     }
 }

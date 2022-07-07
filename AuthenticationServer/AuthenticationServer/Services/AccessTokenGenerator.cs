@@ -24,7 +24,7 @@ namespace AuthenticationServer.Services
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             return _tokenGenerator.GenerateToken(_configuration.AccessTokenSecret, 

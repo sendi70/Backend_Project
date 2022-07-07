@@ -24,7 +24,7 @@ namespace AuthenticationServer.Services
 
             RefreshToken refreshTokenDTO = new RefreshToken()
             {
-                Token = accessToken,
+                Token = refreshToken,
                 UserId = user.Id,
             };
             await _refreshTokenRepository.Create(refreshTokenDTO);

@@ -27,7 +27,7 @@ namespace AuthenticationServer.Services
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            return _tokenGenerator.GenerateToken(_configuration.AccesTokenSecret, 
+            return _tokenGenerator.GenerateToken(_configuration.AccessTokenSecret, 
                 _configuration.Issuer, 
                 _configuration.Audience, 
                 _configuration.AccessTokenExpirationMinutes, 

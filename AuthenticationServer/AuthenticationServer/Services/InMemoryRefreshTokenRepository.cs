@@ -24,7 +24,7 @@ namespace AuthenticationServer.Services
 
         public Task<RefreshToken> GetRefreshToken(string token)
         {
-            RefreshToken refreshToken = _refreshTokens.FirstOrDefault(r=>r.Token==token);
+            RefreshToken refreshToken = _refreshTokens.FirstOrDefault(r => r.Token == token);
             return Task.FromResult(refreshToken);
         }
     }

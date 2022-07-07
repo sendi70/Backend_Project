@@ -2,7 +2,7 @@
 {
     public class AuthenticationConfiguration
     {
-        public string AccesTokenSecret { get; set; }
+        public string AccessTokenSecret { get; set; }
         public int AccessTokenExpirationMinutes { get; set; }
         public string Issuer { get; set; }
         public string Audience { get; set; }

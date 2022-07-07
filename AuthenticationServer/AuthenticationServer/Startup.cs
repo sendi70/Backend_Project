@@ -30,8 +30,9 @@ namespace AuthenticationServer
         {
             services.AddControllers();
          
-            AuthenticationConfiguration authenticationConfigurator = new AuthenticationConfiguration();
-            _configuration.Bind("Authentication", authenticationConfigurator);
+            AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+            _configuration.Bind("Authentication", authenticationConfiguration);
+            services.AddSingleton(authenticationConfiguration);
             
             services.AddSingleton<AccessTokenGenerator>();
             services.AddSingleton<RefreshTokenGenerator>();

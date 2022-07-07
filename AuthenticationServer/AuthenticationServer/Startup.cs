@@ -39,7 +39,7 @@ namespace AuthenticationServer
             services.AddSingleton(authenticationConfiguration);
 
             string connectionString = _configuration.GetConnectionString("sqlite");
-            services.AddDbContext<AuthenticationDbContext>(o => o.UseSqlite());
+            services.AddDbContext<AuthenticationDbContext>(o => o.UseSqlite(connectionString));
 
             services.AddSingleton<AccessTokenGenerator>();
             services.AddSingleton<RefreshTokenGenerator>();

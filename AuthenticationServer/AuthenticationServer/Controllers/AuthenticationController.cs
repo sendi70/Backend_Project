@@ -2,8 +2,11 @@
 using AuthenticationServer.Models.Requests;
 using AuthenticationServer.Models.Responses;
 using AuthenticationServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AuthenticationServer.Controllers
@@ -108,5 +111,17 @@ namespace AuthenticationServer.Controllers
             AuthenticatedUserResponse response = await _authenticator.Authenticate(user);
             return Ok(response);
         }
+        [Authorize]
+        [HttpDelete("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            string rawUserId = HttpContext.User.FindFirstValue("id");
+            if(!Guid.TryParse(rawUserId, out Guid userId))
+            {
+                return Unauthorized();
+            }
+            await _refreshTokenRepository.DeleteAll(userId);
+            return NoContent();
+        };
     }
 }

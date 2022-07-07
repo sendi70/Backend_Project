@@ -27,5 +27,11 @@ namespace AuthenticationServer.Services
             RefreshToken refreshToken = _refreshTokens.FirstOrDefault(r => r.Token == token);
             return Task.FromResult(refreshToken);
         }
+
+        public Task DeleteAll(Guid userId)
+        {
+            _refreshTokens.RemoveAll(r => r.UserId == userId);
+            return Task.CompletedTask;
+        }
     }
 }

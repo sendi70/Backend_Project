@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationServer
 {
@@ -36,7 +37,10 @@ namespace AuthenticationServer
             AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
             _configuration.Bind("Authentication", authenticationConfiguration);
             services.AddSingleton(authenticationConfiguration);
-            
+
+            string connectionString = _configuration.GetConnectionString("sqlite");
+            services.AddDbContext<AuthenticationDbContext>(o => o.UseSqlite());
+
             services.AddSingleton<AccessTokenGenerator>();
             services.AddSingleton<RefreshTokenGenerator>();
             services.AddSingleton<RefreshTokenValidator>();

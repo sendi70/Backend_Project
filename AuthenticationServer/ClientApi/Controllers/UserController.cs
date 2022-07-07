@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Net.Http.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Formatting;
 
 namespace ClientApi.Controllers
 {
@@ -31,12 +33,6 @@ namespace ClientApi.Controllers
         [HttpPost]
         public IActionResult Create(User model)
         {
-            //string data = JsonConvert.SerializeObject(model);
-            //var buffer= Encoding.UTF8.GetBytes(data);
-            //var byteContent = new ByteArrayContent(buffer);
-            //byteContent.Headers.ContentType = new MediaTypeHeaderValue("aplication/json");
-            //StringContent content = new StringContent(data, Encoding.UTF8, "aplication/json");
-            //HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/register", byteContent).Result;
             var user = new User { 
                 Email = model.Email,
                 Username = model.Username,
@@ -48,6 +44,30 @@ namespace ClientApi.Controllers
             {
                 return RedirectToAction("Index");
             }
+            ViewBag.ErrorMessage = response.StatusCode.ToString();
+            return View();
+        }public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(Login model)
+        {
+            var loginCredentials = new User { 
+                Username = model.Username,
+                Password = model.Password,
+            };
+            HttpResponseMessage response = client.PostAsJsonAsync(baseAddress + "/login", loginCredentials).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var context = response.Content.ReadAsAsync<AuthenticatedResponse>();
+
+                Response.Cookies.Append("X-Access-Token", context.Result.AccessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                Response.Cookies.Append("X-Username", loginCredentials.Username, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                Response.Cookies.Append("X-Refresh-Token", context.Result.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                return RedirectToAction("Index");
+            }
+            ViewBag.ErrorMessage = response.StatusCode.ToString();
             return View();
         }
     }

@@ -44,7 +44,7 @@ namespace AuthenticationServer
             services.AddSingleton<AccessTokenGenerator>();
             services.AddSingleton<RefreshTokenGenerator>();
             services.AddSingleton<RefreshTokenValidator>();
-            services.AddSingleton<Authenticator>();
+            services.AddScoped<Authenticator>();
             services.AddSingleton<TokenGenerator>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserRepository, DatabaseUserRepository>();

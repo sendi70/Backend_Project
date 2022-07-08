@@ -31,9 +31,9 @@ namespace ClientApi.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(User model)
+        public IActionResult Create(UserDto model)
         {
-            var user = new User { 
+            var user = new UserDto { 
                 Email = model.Email,
                 Username = model.Username,
                 Password = model.Password,
@@ -53,7 +53,7 @@ namespace ClientApi.Controllers
         [HttpPost]
         public IActionResult Login(Login model)
         {
-            var loginCredentials = new User { 
+            var loginCredentials = new UserDto { 
                 Username = model.Username,
                 Password = model.Password,
             };

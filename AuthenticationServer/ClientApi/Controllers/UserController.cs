@@ -61,10 +61,10 @@ namespace ClientApi.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var context = response.Content.ReadAsAsync<AuthenticatedResponse>();
-
                 Response.Cookies.Append("X-Access-Token", context.Result.AccessToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
                 Response.Cookies.Append("X-Username", loginCredentials.Username, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
                 Response.Cookies.Append("X-Refresh-Token", context.Result.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                Response.Cookies.Append("IsAuthenticated", "Yes", new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict, Expires = DateTime.Now.AddMinutes(1) });
                 return RedirectToAction("Index");
             }
             ViewBag.ErrorMessage = response.StatusCode.ToString();

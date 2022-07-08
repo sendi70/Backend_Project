@@ -1,5 +1,6 @@
 ﻿using ClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 using System.Diagnostics;
 
 namespace ClientApi.Controllers
@@ -20,7 +21,14 @@ namespace ClientApi.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            var isAuthenticated = Request.Cookies["IsAuthenticated"];
+            if (isAuthenticated == "Yes")
+            {
+                return View();
+            }
+            else { 
+                return RedirectToAction("Index");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

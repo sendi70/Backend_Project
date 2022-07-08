@@ -26,7 +26,7 @@ namespace ClientApi.Data
 
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Playground> playgrounds { get; set; }
+        public DbSet<Playground> Playgrounds { get; set; }
         public DbSet<Event_Participans> Event_Participans { get; set; }
 
     }

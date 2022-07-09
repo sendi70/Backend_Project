@@ -33,9 +33,10 @@ namespace ClientApi.Data.Services
             return result;
         }
 
-        public Task<Event> GetByIdAsync(int id)
+        public async Task<Event> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Events.FirstOrDefaultAsync(x => x.Id == id);
+            return result;
         }
 
         public Task<Event> UpdateAsync(int id, Event ev)

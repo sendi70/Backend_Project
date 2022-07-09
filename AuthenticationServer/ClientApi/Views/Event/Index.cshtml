@@ -1,28 +1,37 @@
-﻿@model IEnumerable<ClientApi.Models.Event>
+﻿@model X.PagedList.IPagedList<ClientApi.Models.Event>
+@using X.PagedList.Mvc.Core;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Events";
 }
 
-<h1>Index</h1>
+<h1>Events</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@using (Html.BeginForm("Index","Event",FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString",ViewBag.CurrentFilter as string)  
+        <input type="submit" value="Search" /></p>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink("Name","Index",new {sortOrder=ViewBag.NameSortParm,currentFilter=ViewBag.CurrentFilter})
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                @Html.ActionLink("Start Time","Index",new {sortOrder=ViewBag.DateSortParm,currentFilter=ViewBag.CurrentFilter})
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                End Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Playground)
+                Playground
             </th>
             <th>
                 Participants
@@ -57,3 +66,8 @@
 }
     </tbody>
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

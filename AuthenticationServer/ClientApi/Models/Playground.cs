@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BackEndProject.Models
+namespace ClientApi.Models
 {
     public class Playground
     {

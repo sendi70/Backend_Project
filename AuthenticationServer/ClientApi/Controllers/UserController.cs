@@ -6,6 +6,7 @@ using System.Text;
 using System.Net.Http.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Formatting;
+using ClientApi.Data.Services;
 
 namespace ClientApi.Controllers
 {
@@ -14,16 +15,23 @@ namespace ClientApi.Controllers
         Uri baseAddress = new Uri("https://localhost:5001/api/Authentication");
         HttpClient client;
 
-        public UserController()
+        private readonly IUserService _service;
+        public UserController(IUserService service)
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
+            _service = service;
         }
 
         public IActionResult Index()
         {
 
             return View();
+        }
+        public async Task<IActionResult> GetAll()
+        {
+            var data = await _service.GetAllAsync();
+            return View(data);
         }
 
         public IActionResult Create()

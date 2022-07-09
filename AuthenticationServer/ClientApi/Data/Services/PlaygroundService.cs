@@ -1,4 +1,5 @@
 ﻿using BackEndProject.Models;
+using ClientApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClientApi.Data.Services

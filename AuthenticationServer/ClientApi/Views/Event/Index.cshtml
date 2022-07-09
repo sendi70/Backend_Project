@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ClientApi.Models.Playground>
+﻿@model IEnumerable<ClientApi.Models.Event>
 
 @{
-    ViewData["Title"] = "GetAll";
+    ViewData["Title"] = "Index";
 }
 
-<h1>GetAll</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,16 +16,16 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Destination)
+                @Html.DisplayNameFor(model => model.StartTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CordinatesX)
+                @Html.DisplayNameFor(model => model.EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CordinatesY)
+                @Html.DisplayNameFor(model => model.Playground)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Capacity)
+                Participants
             </th>
             <th></th>
         </tr>
@@ -37,16 +37,16 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Destination)
+                @Html.DisplayFor(modelItem => item.StartTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CordinatesX)
+                @Html.DisplayFor(modelItem => item.EndTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CordinatesY)
+                <a asp-action="Details" asp-controller="Playground" asp-route-id=@item.Playground.Id>@Html.DisplayFor(modelItem => item.Playground.Name)</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
+                0/@item.Playground.Capacity
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

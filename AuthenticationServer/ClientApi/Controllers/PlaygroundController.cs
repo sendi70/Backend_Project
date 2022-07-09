@@ -1,6 +1,7 @@
 ﻿using BackEndProject.Models;
 using ClientApi.Data;
 using ClientApi.Data.Services;
+using ClientApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientApi.Controllers

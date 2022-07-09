@@ -1,4 +1,5 @@
 ﻿using BackEndProject.Models;
+using ClientApi.Models;
 
 namespace ClientApi.Data.Services
 {

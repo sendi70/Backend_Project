@@ -1,4 +1,5 @@
 ﻿using BackEndProject.Models;
+using ClientApi.Models;
 
 namespace ClientApi.Data
 {
@@ -51,8 +52,22 @@ namespace ClientApi.Data
                     });
                     context.SaveChanges();
                 }
+                if (!context.Users.Any())
+                {
+                    context.Users.AddRange(new List<User>()
+                    {
+                        new User
+                        {
+                            Name = "test2",
+                            Email = "test2@gmail.com",
+                            Age = 23,
+                            City = "Madryt"
+                        }
+                    });
+                    context.SaveChanges();
+                }
 
             }
-        }
+        }   
     }
 }

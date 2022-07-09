@@ -49,6 +49,7 @@ namespace ClientApi.Data
                             Capacity = 10,
                         }
                     });
+                    context.SaveChanges();
                 }
 
             }

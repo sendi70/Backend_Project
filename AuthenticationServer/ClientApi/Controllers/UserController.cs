@@ -77,7 +77,7 @@ namespace ClientApi.Controllers
                 var user = _service.GetByNameAsync(loginCredentials.Username);
                 if (user.Result != null)
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index","Home");
                 }
                 return RedirectToAction(nameof(CreateUserProfil));
             }
@@ -94,7 +94,7 @@ namespace ClientApi.Controllers
         {
             user.Name = Request.Cookies["X-Username"];
             _service.AddAsync(user);
-            return View(nameof(Index));
+            return RedirectToAction("Index", "Home");
 
         }
         public async Task<IActionResult> LogoutAsync()

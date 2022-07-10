@@ -81,20 +81,51 @@ namespace ClientApi.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var data = await _service.GetByIdAsync(id);
+            ViewBag.PlaygroundId = await _service.GetPlaygroundsAsync();
             return View(data);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Destination,CordinatesX,CordinatesY,Capacity")] Event ev)
         {
+            var data = await _service.GetByIdAsync(id);
+            var currUser = await _service.GetUserAsync(Request.Cookies["X-Username"]);
+            if (data.Organiser == currUser)
+            {
             await _service.UpdateAsync(id, ev);
             return RedirectToAction(nameof(Details), new { id });
+            }
+            return View("Not authorized");
         }
         public async Task<IActionResult> Details(int id)
         {
             var data = await _service.GetByIdAsync(id);
             ViewBag.Playground = await _service.GetPlaygroundAsync(data.PlaygroundId);
             return View(data);
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var data = await _service.GetByIdAsync(id);
+            ViewBag.Playground = await _service.GetPlaygroundAsync(data.PlaygroundId);
+            return View(data);
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var data = await _service.GetByIdAsync(id);
+            var currUser = await _service.GetUserAsync(Request.Cookies["X-Username"]);
+            if (data.Organiser == currUser)
+            {
+                var ev = await _service.GetByIdAsync(id);
+                if (ev == null) return View("NotFound");
+                await _service.DeleteAsync(id);
+                if (!ModelState.IsValid)
+                {
+                    return View(ev);
+                }
+            return RedirectToAction(nameof(Index));
+            }
+            return View("Not allowed");
         }
     }
 }

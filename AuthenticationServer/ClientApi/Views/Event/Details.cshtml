@@ -32,7 +32,38 @@
             @Html.DisplayNameFor(model => model.Playground)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Playground.Id)
+            <dl class="row">
+        <dt class = "col-sm-2">
+            Name
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Playground.Name
+        </dd>
+        <dt class = "col-sm-2">
+            Destination
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Playground.Destination
+        </dd>
+        <dt class = "col-sm-2">
+            CordinatesX
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Playground.CordinatesX
+        </dd>
+        <dt class = "col-sm-2">
+            CordinatesY
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Playground.CordinatesY
+        </dd>
+        <dt class = "col-sm-2">
+            Capacity
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Playground.Capacity
+        </dd>
+    </dl>
         </dd>
     </dl>
 </div>

@@ -39,9 +39,16 @@ namespace ClientApi.Data.Services
             return result;
         }
 
-        public Task<Event> UpdateAsync(int id, Event ev)
+        public async Task<Event> UpdateAsync(int id, Event ev)
         {
-            throw new NotImplementedException();
+            var oldEntry = await _context.Events.FirstOrDefaultAsync(x => x.Id == id);
+            oldEntry.Name = ev.Name;
+            oldEntry.StartTime = ev.StartTime;
+            oldEntry.EndTime = ev.EndTime;
+            oldEntry.Playground = ev.Playground;
+            _context.Entry(oldEntry).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return ev;
         }
         public async Task<IEnumerable<SelectListItem>> GetPlaygroundsAsync()
         {

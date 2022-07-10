@@ -16,5 +16,15 @@ namespace ClientApi.Data.Services
             var result = await _context.Users.ToListAsync();
             return result;
         }
+        public async Task<User> GetByNameAsync(string name)
+        {
+            var result = await _context.Users.FirstOrDefaultAsync(x => x.Name == name);
+            return result;
+        }
+        public async Task AddAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }
